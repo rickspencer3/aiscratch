@@ -2,13 +2,14 @@ import time
 from gpt4all import GPT4All
 
 results = []
-devices = ["cpu","gpu"]
-models = ["Phi-3-medium-128k-instruct-Q6_K.gguf",
-          "Meta-Llama-3-8B-Instruct.Q4_0.gguf",
+devices = ["gpu", "cuda"]
+models = ["Meta-Llama-3-8B-Instruct.Q4_0.gguf",
           "Phi-3-mini-4k-instruct.Q4_0.gguf",
           "orca-mini-3b-gguf2-q4_0.gguf"]
 
 def generate(model_name, device):
+    print("available devices:")
+    print(GPT4All.list_gpus())
     model = GPT4All(model_name, device=device)
     print(f"model created for {model_name}/{device}")
     start_time = time.time()

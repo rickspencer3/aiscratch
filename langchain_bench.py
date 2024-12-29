@@ -1,18 +1,18 @@
+from langchain_community.llms import HuggingFacePipeline
+from transformers import pipeline
 import time
-from gpt4all import GPT4All
 
 results = []
-devices = ["cpu","gpu"]
-models = ["Phi-3-medium-128k-instruct-Q6_K.gguf",
-          "Meta-Llama-3-8B-Instruct.Q4_0.gguf",
-          "Phi-3-mini-4k-instruct.Q4_0.gguf",
-          "orca-mini-3b-gguf2-q4_0.gguf"]
+devices = ["cpu", "gpu"]
+models = ["mistralai/Mistral-7B-Instruct-v0.3"]
 
 def generate(model_name, device):
-    model = GPT4All(model_name, device=device)
-    print(f"model created for {model_name}/{device}")
+    d = -1 if device == "cpu" else 0
+    model = HuggingFacePipeline(pipeline=pipeline("text-generation", model=model_name, device=d))
+    print(f"model created for {model_name}/{device} using {model.pipeline.device}")
     start_time = time.time()
-    response = model.generate("Who was Jerry Garcia?")
+    response = model.invoke("Who was Jerry Garcia?")
+    print(response)
     end_time = time.time()
     
     latency = end_time - start_time
@@ -27,6 +27,3 @@ for model in models:
 print(f"model       device      latency")
 for result in results:
     print(f"{result['model'][:10]}      {result['device']}      {result['latency']}")
-
-
-
