@@ -3,8 +3,8 @@ from transformers import pipeline
 import time
 
 results = []
-devices = ["cpu", "gpu"]
-models = ["mistralai/Mistral-7B-Instruct-v0.3"]
+devices = ["cpu", "gpu","cuda"]
+models = ["gpt2"]
 
 def generate(model_name, device):
     d = -1 if device == "cpu" else 0
